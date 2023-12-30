@@ -11,57 +11,66 @@
 
   <!-- Firebase Configuration -->
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxJ_6-YSusdDqH7H1C5yadd-K1G2pkqrA",
-      authDomain: "variety-66c40.firebaseapp.com",
-      projectId: "variety-66c40",
-      storageBucket: "variety-66c40.appspot.com",
-      messagingSenderId: "621536989998",
-      appId: "1:621536989998:web:b9e08027e9974a7533a0bf"
-    };
+    document.addEventListener('DOMContentLoaded', async function () {
+      const firebaseConfig = {
+        apiKey: "AIzaSyBxJ_6-YSusdDqH7H1C5yadd-K1G2pkqrA",
+        authDomain: "variety-66c40.firebaseapp.com",
+        projectId: "variety-66c40",
+        storageBucket: "variety-66c40.appspot.com",
+        messagingSenderId: "621536989998",
+        appId: "1:621536989998:web:b9e08027e9974a7533a0bf"
+      };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+      try {
+        firebase.initializeApp(firebaseConfig);
+        console.log('Firebase initialized successfully!');
+      } catch (error) {
+        console.error('Error initializing Firebase: ', error);
+        return; // Stop further execution if Firebase initialization fails
+      }
 
-    const dataForm = document.getElementById('dataForm');
-    const intValueInput = document.getElementById('intValue');
-    const savedValueDiv = document.getElementById('savedValue');
+      const db = firebase.firestore();
+      console.log('Firestore database initialized successfully!');
 
-    // Event listener for form submission
-    dataForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+      const dataForm = document.getElementById('dataForm');
+      const intValueInput = document.getElementById('intValue');
+      const savedValueDiv = document.getElementById('savedValue');
 
-      // Get the entered integer value
-      const intValue = parseInt(intValueInput.value, 10);
+      // Event listener for form submission
+      dataForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-      // Save the value to Firestore
-      db.collection('integerValues').add({
-        intValue: intValue
-      })
-        .then(() => {
+        // Get the entered integer value
+        const intValue = parseInt(intValueInput.value, 10);
+
+        try {
+          // Save the value to Firestore
+          await db.collection('integerValues').add({
+            intValue: intValue
+          });
+
           console.log('Value successfully saved to Firestore!');
           intValueInput.value = ''; // Clear the input field
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error('Error saving value: ', error);
-        });
-    });
-
-    // Retrieve and display the saved value
-    db.collection('integerValues').onSnapshot((querySnapshot) => {
-      let savedValues = '';
-      querySnapshot.forEach((doc) => {
-        const savedValue = doc.data().intValue;
-        savedValues += `Saved Value: ${savedValue}<br>`;
+        }
       });
-      savedValueDiv.innerHTML = savedValues;
-    });
-  });
-</script>
 
+      // Retrieve and display the saved value
+      db.collection('integerValues').onSnapshot((querySnapshot) => {
+        let savedValues = '';
+        querySnapshot.forEach((doc) => {
+          const savedValue = doc.data().intValue;
+          savedValues += `Saved Value: ${savedValue}<br>`;
+        });
+        savedValueDiv.innerHTML = savedValues;
+      });
+    });
+  </script>
 </head>
 <body>
+  <!-- Your HTML content here -->
+
   <h1>Firebase Form Example</h1>
 
   <!-- Form to Enter Integer Value -->
