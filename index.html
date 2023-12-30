@@ -34,6 +34,42 @@
       const db = firebase.firestore();
 
       // Your other JavaScript code here
+
+      // Event listener for form submission
+      const dataForm = document.getElementById('dataForm');
+      const intValueInput = document.getElementById('intValue');
+      const savedValueDiv = document.getElementById('savedValue');
+
+      dataForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Get the entered integer value
+        const intValue = parseInt(intValueInput.value, 10);
+
+        // Save the value to Firestore
+        db.collection('integerValues').add({
+          intValue: intValue
+        })
+          .then(() => {
+            console.log('Value successfully saved to Firestore!');
+            intValueInput.value = ''; // Clear the input field
+          })
+          .catch((error) => {
+            console.error('Error saving value: ', error);
+          });
+      });
+
+      // Retrieve and display the saved value
+      db.collection('integerValues').get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const savedValue = doc.data().intValue;
+            savedValueDiv.innerHTML = `Saved Value: ${savedValue}`;
+          });
+        })
+        .catch((error) => {
+          console.error('Error getting saved value: ', error);
+        });
     });
   </script>
 </head>
@@ -51,44 +87,5 @@
 
   <!-- Display Saved Value -->
   <div id="savedValue"></div>
-
-  <!-- JavaScript Code to Handle Form Submission and Data Retrieval -->
-  <script>
-    const dataForm = document.getElementById('dataForm');
-    const intValueInput = document.getElementById('intValue');
-    const savedValueDiv = document.getElementById('savedValue');
-
-    // Event listener for form submission
-    dataForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      // Get the entered integer value
-      const intValue = parseInt(intValueInput.value, 10);
-
-      // Save the value to Firestore
-      db.collection('integerValues').add({
-        intValue: intValue
-      })
-        .then(() => {
-          console.log('Value successfully saved to Firestore!');
-          intValueInput.value = ''; // Clear the input field
-        })
-        .catch((error) => {
-          console.error('Error saving value: ', error);
-        });
-    });
-
-    // Retrieve and display the saved value
-    db.collection('integerValues').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const savedValue = doc.data().intValue;
-          savedValueDiv.innerHTML = `Saved Value: ${savedValue}`;
-        });
-      })
-      .catch((error) => {
-        console.error('Error getting saved value: ', error);
-      });
-  </script>
 </body>
 </html>
