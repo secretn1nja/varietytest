@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Form Example</title>
+</head>
+<body>
+
+  <h1>Firebase Form Example</h1>
+
+  <!-- Form to Enter Integer Value -->
+  <form id="dataForm">
+    <label for="intValue">Enter an Integer Value:</label>
+    <input type="number" id="intValue" name="intValue" required>
+    <button type="submit">Save</button>
+  </form>
+
+  <!-- Display Saved Value -->
+  <div id="savedValue"></div>
+
+  <!-- Include Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js"></script>
+
+  <!-- Firebase Configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxJ_6-YSusdDqH7H1C5yadd-K1G2pkqrA",
+	  authDomain: "variety-66c40.firebaseapp.com",
+      projectId: "variety-66c40",
+      storageBucket: "variety-66c40.appspot.com",
+      messagingSenderId: "621536989998",
+      appId: "1:621536989998:web:b9e08027e9974a7533a0bf"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+  </script>
+
+  <!-- JavaScript Code to Handle Form Submission and Data Retrieval -->
+  <script>
+    const dataForm = document.getElementById('dataForm');
+    const intValueInput = document.getElementById('intValue');
+    const savedValueDiv = document.getElementById('savedValue');
+
+    // Event listener for form submission
+    dataForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Get the entered integer value
+      const intValue = parseInt(intValueInput.value, 10);
+
+      // Save the value to Firestore
+      db.collection('integerValues').add({
+        value: intValue
+      })
+      .then(() => {
+        console.log('Value successfully saved to Firestore!');
+        intValueInput.value = ''; // Clear the input field
+      })
+      .catch((error) => {
+        console.error('Error saving value: ', error);
+      });
+    });
+
+    // Retrieve and display the saved value
+    db.collection('integerValues').get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const savedValue = doc.data().value;
+          savedValueDiv.innerHTML = `Saved Value: ${savedValue}`;
+        });
+      })
+      .catch((error) => {
+        console.error('Error getting saved value: ', error);
+      });
+  </script>
+
+</body>
+</html>
