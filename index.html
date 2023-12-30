@@ -6,19 +6,14 @@
   <title>Firebase Form Example</title>
 
   <!-- Include Firebase SDK (non-modular) -->
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <!-- Firebase Configuration -->
-  <script defer>
+  <script>
     // Check if Firebase is already initialized
     if (typeof firebase === 'undefined') {
-      document.write('<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"><\/script>');
-      document.write('<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"><\/script>');
-    }
-
-    // Initialize Firebase
-    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize Firebase
       const firebaseConfig = {
         apiKey: "AIzaSyBxJ_6-YSusdDqH7H1C5yadd-K1G2pkqrA",
         authDomain: "variety-66c40.firebaseapp.com",
@@ -70,7 +65,7 @@
         .catch((error) => {
           console.error('Error getting saved value: ', error);
         });
-    });
+    }
   </script>
 </head>
 <body>
