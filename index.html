@@ -56,8 +56,8 @@
 
       // Save the value to Firestore
       db.collection('integerValues').add({
-        value: intValue
-      })
+		intValue: intValue
+	  })
       .then(() => {
         console.log('Value successfully saved to Firestore!');
         intValueInput.value = ''; // Clear the input field
