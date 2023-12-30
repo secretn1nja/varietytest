@@ -23,10 +23,16 @@
         appId: "1:621536989998:web:b9e08027e9974a7533a0bf"
       };
 
-      firebase.initializeApp(firebaseConfig);
+      try {
+        firebase.initializeApp(firebaseConfig);
+        console.log('Firebase initialized successfully!');
+      } catch (error) {
+        console.error('Error initializing Firebase: ', error);
+      }
 
       // Get a reference to the Firestore database
       const db = firebase.firestore();
+      console.log('Firestore database initialized successfully!');
 
       // Your other JavaScript code here
 
